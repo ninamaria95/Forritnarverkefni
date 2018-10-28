@@ -137,5 +137,28 @@ for i=1:2
      
 end
 
+%búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
+% á plönunum tveimur með lokuð og opin augu
+
+
+for i=1:2
+    figure(i)
+    munur=A(i).open;
+    subplot(1,2,1)
+    plot(munur(:,2),munur(:,3),'b.','LineWidth',0.3)
+    axis([-15 15 -20 30])
+    title('Opin augu')
+    xlabel('Medial/lateral [Nm]')
+    ylabel('Anterior/Posterior [Nm]')
+    
+    mun=A(i).closed;
+    subplot(1,2,2)
+    plot(mun(:,2),mun(:,3),'b.','LineWidth',0.3)
+    axis([-15 15 -20 30])
+    title('Lokuð augu')
+    xlabel('Medial/lateral [Nm]')
+    ylabel('Anterior/Posterior [Nm]')
+
+end
 
 ??? spurja hvor við eigum að gera fall fyrir plot
