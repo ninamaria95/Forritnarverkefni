@@ -32,5 +32,5 @@ B(:,2)=Tidni;
 
 %Í lið 2 breyttum við söfnunartíðninni 50 Hz í sekúndur og var það 1/50 sek sem er u.þ.b. 0.02 sek
 %finnum núna fjölda stimula/örvana
-x=find(B(:,2)==1);
+x=find(B(:,2)==1);   %hérna er staðsetningin á örvunum
 stnum=length(x);
