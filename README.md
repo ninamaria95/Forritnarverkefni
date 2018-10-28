@@ -28,4 +28,4 @@ for i=1:length(Tidni)
         Tidni(i)=1;
     end  
 end
-B(:,2)=Tidni
+B(:,2)=Tidni;
