@@ -53,7 +53,7 @@ hfjoldi=stimulifall(B);
 
 %gerum for lykkju fyrir alla 33 einstaklingana
 
-for i=1:2
+for i=1:33
     figure(i)
   
     %núna setjum við inn stimuli hlutann
@@ -141,7 +141,7 @@ end
 % á plönunum tveimur með lokuð og opin augu
 
 
-for i=1:2
+for i=1:33
     figure(i)
     munur=A(i).open;
     subplot(1,2,1)
