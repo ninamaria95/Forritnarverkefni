@@ -3,13 +3,13 @@ Forritunarverkefni
 
 slodi=uigetdir('Veldu moppu')
 
-for i=1:33
+for i=1:33 %Búin til for-lykkja til þess að opna allar .xlsx skrár sem heita _closed
     skra=strcat('SUB',num2str(i),'_closed','.xlsx');
     s=strcat(slodi,'\',skra);
     A(i).closed=xlsread(s);
 end
 
-for i=1:33
+for i=1:33 %Búin til for-lykkja til þess að opna allar .xlsx skrár sem heita _open
     skra=strcat('SUB',num2str(i),'_open','.xlsx');
     s=strcat(slodi,'\',skra);
     A(i).open=xlsread(s);
