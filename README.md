@@ -62,7 +62,9 @@ for i=1:2
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
-    axis([0 330 -4 4])
+    set(gca,'XTickLabel',[0:50:330])
+    set(gca,'YTickLabel',{' '})
+    title('Stimuli','FontSize',7.3)
     
     %Stimuli mynd nr 2
     subplot(3,2,2)
@@ -70,8 +72,10 @@ for i=1:2
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
-    axis([0 330 -4 4])
-    
+    set(gca,'XTickLabel',[0:50:330])
+    set(gca,'YTickLabel',{' '})
+   title('Stimuli','FontSize',7.3) 
+   
     x=A(i).open;
     Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
     Q1=x(1501:5250,:);
@@ -83,6 +87,8 @@ for i=1:2
         Q2(:,1),Q2(:,2),'g', Q3(:,1),Q3(:,2),'b',Q4(:,1),Q4(:,2),'k')
     hold
     axis([0 330 -40 40])
+    title('Opin augu: Medial/Lateral vægi','LineWidth',3)
+    ylabel('Torque [Nm]')
     
     x=A(i).closed;
     Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
@@ -94,6 +100,8 @@ for i=1:2
     plot(Qs(:,1),Qs(:,2),'m',Q1(:,1),Q1(:,2),'r',...
         Q2(:,1),Q2(:,2),'g', Q3(:,1),Q3(:,2),'b',Q4(:,1),Q4(:,2),'k')
     axis([0 330 -40 40])
+    title('Lokuð augu: Medial/Lateral vægi','LineWidth',3)
+    ylabel('Torque [Nm]')
     
     %Bætum við Anterior/posterior vægi
     x=A(i).open;
@@ -107,6 +115,9 @@ for i=1:2
         Q2(:,1),Q2(:,3),'g', Q3(:,1),Q3(:,3),'b',Q4(:,1),Q4(:,3),'k')
     hold
     axis([0 330 -40 40])
+    title('Opin augu: Anterior/posterior vægi','LineWidth',3)
+    ylabel('Torque [Nm]')
+    xlabel('Tími[s]')
     
     x=A(i).closed;
     Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
@@ -118,6 +129,9 @@ for i=1:2
     plot(Qs(:,1),Qs(:,3),'m',Q1(:,1),Q1(:,3),'r',...
         Q2(:,1),Q2(:,3),'g', Q3(:,1),Q3(:,3),'b',Q4(:,1),Q4(:,3),'k')
     axis([0 330 -40 40])
+    title('Lokuð augu: Anterior/posterior vægi','LineWidth',3)
+    ylabel('Torque [Nm]')
+    xlabel('Tími[s]')
    
     
 end
