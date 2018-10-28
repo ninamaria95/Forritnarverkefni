@@ -3,13 +3,13 @@ Forritunarverkefni
 
 slodi=uigetdir('Veldu moppu')
 
-for i=1:33 %Búin til for-lykkja til þess að opna allar .xlsx skrár sem heita _closed
+for i=1:33
     skra=strcat('SUB',num2str(i),'_closed','.xlsx');
     s=strcat(slodi,'\',skra);
     A(i).closed=xlsread(s);
 end
 
-for i=1:33 %Búin til for-lykkja til þess að opna allar .xlsx skrár sem heita _open
+for i=1:33
     skra=strcat('SUB',num2str(i),'_open','.xlsx');
     s=strcat(slodi,'\',skra);
     A(i).open=xlsread(s);
@@ -19,9 +19,6 @@ skra=strcat('Stimuli','.xlsx');
 s=strcat(slodi,'\',skra);
 B=xlsread(s);
 
-%breytum her gildunum 59 í 1 og 20 í 0
-%1 þýðir að örvunin sé á 
-%0 þýðir að örvunin sé af
 Tidni=B(:,2)
 
 for i=1:length(Tidni)
@@ -32,3 +29,8 @@ for i=1:length(Tidni)
     end  
 end
 B(:,2)=Tidni;
+
+%Í lið 2 breyttum við söfnunartíðninni 50 Hz í sekúndur og var það 1/50 sek sem er u.þ.b. 0.02 sek
+%finnum núna fjölda stimula/örvana
+x=find(B(:,2)==1);
+stnum=length(x);
