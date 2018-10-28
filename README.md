@@ -46,3 +46,7 @@ y=mean(B(x));
 fprintf('Heildarfjöldi stimuli er %0.0f \n',stnum)
 fprintf('Meðaltími hvers stimulus er %0.2f sekúndur \n',y)
 end
+
+%% kallað í fallið
+
+hfjoldi=stimulifall(B);
