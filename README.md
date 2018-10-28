@@ -53,7 +53,7 @@ hfjoldi=stimulifall(B);
 
 %gerum for lykkju fyrir alla 33 einstaklingana
 
-for i=1:33
+for i=1:2
     figure(i)
   
     %núna setjum við inn stimuli hlutann
@@ -133,8 +133,27 @@ for i=1:33
     title('Lokuð augu: Anterior/posterior vægi','LineWidth',3)
     ylabel('Torque [Nm]')
     xlabel('Tími[s]')
+    x = [0.15 0.15]; %ef þú breytir þessum tölum færist örin til hliðar
+    y = [0.15 0.2]; % ef þú breytir þessum breytist lengdin á örinni
+    annotation('textarrow',x,y,'String','QS ')
+
+    x1 = [0.2 0.2];
+    y1 = [0.15 0.2];
+    annotation('textarrow',x1,y1,'String','Q1 ')
+
+    x2 = [0.27 0.27];
+    y2 = [0.15 0.2];
+    annotation('textarrow',x2,y2,'String','Q2 ')
+
+    x3 = [0.35 0.35];
+    y3 = [0.15 0.2];
+    annotation('textarrow',x3,y3,'String','Q3 ')
+
+    x4 = [0.43 0.43];
+    y4 = [0.15 0.2];
+    annotation('textarrow',x4,y4,'String','Q4 ')
+
  
-     
 end
 
 %búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
