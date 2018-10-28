@@ -76,6 +76,7 @@ for i=1:2
     set(gca,'YTickLabel',{' '})
    title('Stimuli','FontSize',7.3) 
    
+   
     x=A(i).open;
     Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
     Q1=x(1501:5250,:);
@@ -132,11 +133,9 @@ for i=1:2
     title('Lokuð augu: Anterior/posterior vægi','LineWidth',3)
     ylabel('Torque [Nm]')
     xlabel('Tími[s]')
-   
-    
+ 
+     
 end
-
-
 
 
 ??? spurja hvor við eigum að gera fall fyrir plot
