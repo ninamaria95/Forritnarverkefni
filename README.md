@@ -19,6 +19,9 @@ skra=strcat('Stimuli','.xlsx');
 s=strcat(slodi,'\',skra);
 B=xlsread(s);
 
+%breytum her gildunum 59 í 1 og 20 í 0
+%1 þýðir að örvunin sé á 
+%0 þýðir að örvunin sé af
 Tidni=B(:,2)
 
 for i=1:length(Tidni)
