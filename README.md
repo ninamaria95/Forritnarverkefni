@@ -19,4 +19,13 @@ skra=strcat('Stimuli','.xlsx');
 s=strcat(slodi,'\',skra);
 B=xlsread(s);
 
+Tidni=B(:,2)
 
+for i=1:length(Tidni)
+    if Tidni(i)==20
+        Tidni(i)=0;
+    elseif Tidni(i)==59
+        Tidni(i)=1;
+    end  
+end
+B(:,2)=Tidni
