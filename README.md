@@ -50,3 +50,10 @@ end
 %% kallað í fallið
 
 hfjoldi=stimulifall(B);
+
+
+
+
+
+
+??? spurja hvor við eigum að gera fall fyrir plot
