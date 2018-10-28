@@ -34,3 +34,15 @@ B(:,2)=Tidni;
 %finnum núna fjölda stimula/örvana
 x=find(B(:,2)==1);   %hérna er staðsetningin á örvunum
 stnum=length(x);
+
+%%Hérna er fallið okkar fyrir lið heildarfjölda stimuli og meðaltíma
+
+function [stnum y]=stimulifall(B)
+%búum til fall sem telur fjölda stimula og reiknar út meðaltímalengd þeirra
+x=find(B(:,2)==1);
+stnum=length(x);
+y=mean(B(x));
+
+fprintf('Heildarfjöldi stimuli er %0.0f \n',stnum)
+fprintf('Meðaltími hvers stimulus er %0.2f sekúndur \n',y)
+end
