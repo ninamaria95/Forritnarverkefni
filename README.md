@@ -20,4 +20,4 @@ end
 
 skra=strcat('Stimuli','.xlsx');
 s=strcat(slodi,'/',skra);
-A=xlsread(s);
+B=xlsread(s);
