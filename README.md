@@ -180,4 +180,52 @@ for i=1:33
 
 end
 
-??? spurja hvor við eigum að gera fall fyrir plot
+%%
+%Spurning 6: Hvernig breytist staðan milli Q1 Q2...
+
+%breytan br finnur Qs,Q1 fyrir alla einstaklingana
+br=A.closed;
+%gerum fyrir alla hluta Q nema Qs
+    Q1=br(1501:5250,:);
+    Q2=br(5251:9000,:);
+    Q3=br(9001:12750,:);
+    Q4=br(12751:16500,:);
+    
+    bre=A.open; %opin augu
+    q1=bre(1501:5250,:);
+    q2=bre(5251:9000,:);
+    q3=bre(9001:12750,:);
+    q4=bre(12751:16500,:);
+    
+ %viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 með því að
+ %finna meðaltal af tölugildi (abs)
+ 
+%  %breyting á Q1:
+% qq1=abs(Q1);
+% qq1=mean(qq1)
+% %höfum bara áhuga á niðurstöðum í dálk 2 og 3 sem sýna torque lateral og
+% %posterio
+% qq1=qq1(:,2:3)
+
+%köllum í stodubreyting fallið okkar, fyrir opin augu
+
+[Qq1,Qq2,Qq3,Qq4]=stodubreyting(Q1,Q2,Q3,Q4);
+
+%höfum bara áhuga á dálk 2 og 3 sem segja okkur kraftvægið á lateral og
+%posterior
+
+Qq1=Qq1(:,2:3)
+Qq2=Qq2(:,2:3)
+Qq3=Qq3(:,2:3)
+Qq4=Qq4(:,2:3)
+
+%köllum núna í fallið, fyrir lokuð augu
+
+[qq1,qq2,qq3,qq4]=stodubreyting(q1,q2,q3,q4);
+
+qq1=qq1(:,2:3)
+qq2=qq2(:,2:3)
+qq3=qq3(:,2:3)
+qq4=qq4(:,2:3)
+
+
