@@ -55,7 +55,7 @@ end
 %stimuli skráin sótt
 skra=strcat('Stimuli','.xlsx');
 s=strcat(slodi,'\',skra);
-B=xlsread(s);
+B=xlsread(s);   %skýrum breytuna B
 
 
 
@@ -72,7 +72,7 @@ for i=1:length(Tidni)
         Tidni(i)=1;
     end  
 end
-B(:,2)=Tidni;
+B(:,2)=Tidni; %breytum dálk 2 í nýju gildin úr for-lykkjunni
 
 %Bjuggum til fall til að telja fjölda stimuli og reiknar út meðaltímalengd
 %þeirra
@@ -80,7 +80,6 @@ B(:,2)=Tidni;
 hfjoldi=stimulifall(B);
 %fallið prentar út niðurstöðu í command window
 
-%% 
 %búum til möppu til að vista gröfin okkar úr niðurstöðum fyrir hvern
 %einstakling
 mkdir myndir
@@ -98,6 +97,7 @@ for i=1:33
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
     axis([0 330 -10 10])
+    yticklabels({''})   %viljum taka út y ásinn, hafa hann tóman
     title('Stimuli','FontSize',7.3)
     
     %Stimuli mynd nr 2
@@ -107,8 +107,10 @@ for i=1:33
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
     axis([0 330 -10 10])
+    yticklabels({''})
    title('Stimuli','FontSize',7.3) 
    
+    %Sækjum núna skránna fyrir opin augu og setjum það upp í graf
     x=A(i).open;
     Qs=x(1:1500,:); %gerum fyrir hvern einasta Q hluta, þar sem Qs er quiet stance.
     %veljum ákveðin stök í file-num til að aðgreina Q hlutana
@@ -124,7 +126,7 @@ for i=1:33
     title('Opin augu: Medial/Lateral vægi','LineWidth',3) %setjum inn texta á gröfin
     ylabel('Torque [Nm]')
     
-    x=A(i).closed;
+    x=A(i).closed;  %sótt skránna fyrir lokuð augu
     Qs=x(1:1500,:); 
     Q1=x(1501:5250,:);
     Q2=x(5251:9000,:);
@@ -137,7 +139,7 @@ for i=1:33
     title('Lokuð augu: Medial/Lateral vægi','LineWidth',3)
     ylabel('Torque [Nm]')
     
-    %Bætum við Anterior/posterior vægi
+    %Bætum við Anterior/posterior vægi við opin augu
     x=A(i).open;
     Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
     Q1=x(1501:5250,:);
@@ -153,7 +155,7 @@ for i=1:33
     ylabel('Torque [Nm]')
     xlabel('Tími[s]')
     
-    x=A(i).closed;
+    x=A(i).closed; %lokuð augu
     Qs=x(1:1500,:); 
     Q1=x(1501:5250,:);
     Q2=x(5251:9000,:);
@@ -166,7 +168,7 @@ for i=1:33
     title('Lokuð augu: Anterior/posterior vægi','LineWidth',3)
     ylabel('Torque [Nm]')
     xlabel('Tími[s]')
-    %setjum inn örvar til að útskýra
+    %setjum inn örvar til að útskýra hvern Q hlut
     x = [0.15 0.15]; %ef þú breytir þessum tölum færist örin til hliðar
     y = [0.15 0.2]; % ef þú breytir þessum breytist lengdin á örinni
     annotation('textarrow',x,y,'String','QS ')
@@ -188,17 +190,14 @@ for i=1:33
     annotation('textarrow',x4,y4,'String','Q4 ')
 
     %vistum myndirnar af gröfunum í tölvunni eina í einu
-    temp=['fig',num2str(i),'.png']; %hérna erum við að skýra hverja mynd
+    temp=['fig',num2str(i),'.png']; %þessi skipun skýrir hverja mynd fyrir sig
     saveas(gca,temp); 
 
 end
-cd .. %förum út úr möppunni myndir og aftur í okkar möppu
-
-
+cd .. %förum út úr möppunni 'myndir' og aftur í okkar möppu
 
 %búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
 %á plönunum tveimur með lokuð og opin augu
-
 
 for i=1:33
     figure(i)
@@ -220,19 +219,19 @@ for i=1:33
 
 end
 
-%%
 %viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 og hvort fólki 
 %takist að læra inná það hvernig bregðast skuli við örvunum.
 
-%breytan br finnur Qs,Q1.. fyrir alla einstaklingana
+%breytan br finnur Qs,Q1,Q2,Q3 og Q4 fyrir alla einstaklingana
+%stór stafur fyrir opin augu, lítill fyrir lokuð
 br=A.closed;
 %gerum fyrir alla hluta Q nema Qs
-    Q1=br(1501:5250,:);
+    Q1=br(1501:5250,:); 
     Q2=br(5251:9000,:);
     Q3=br(9001:12750,:);
     Q4=br(12751:16500,:);
     
-    bre=A.open; %opin augu
+bre=A.open; %opin augu
     q1=bre(1501:5250,:);
     q2=bre(5251:9000,:);
     q3=bre(9001:12750,:);
@@ -240,10 +239,9 @@ br=A.closed;
     
  %viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 með því að
  %finna meðaltal af tölugildi (abs)
- 
-%köllum í stodubreyting fallið okkar, fyrir opin augu
+%bjuggum til fall sem gerir það, köllum í það:
 
-[Qq1,Qq2,Qq3,Qq4]=stodubreyting(Q1,Q2,Q3,Q4);
+[Qq1,Qq2,Qq3,Qq4]=stodubreyting(Q1,Q2,Q3,Q4); %opin augu
 
 %höfum bara áhuga á dálk 2 og 3 sem segja okkur kraftvægið á lateral og
 %posterior
@@ -255,7 +253,7 @@ Qq4=Qq4(:,2:3);
 
 disp('frammistaða með opin augu') %Skrifum á skjáinn mat okkar á frammistöðu
 
-%búum til if setningu sem skrifar út niðurstöðu hvort frammitaðan varð
+%búum til if setningu sem skrifar út niðurstöðu hvort frammistaðan varð
 %betri eða verri með tímanum.
 if (Qq2(:,1)+Qq2(:,2))<(Qq1(:,2)+Qq1(:,1))
     disp('Staðan lækkar milli Q1 og Q2, frammistaða betri')
@@ -301,9 +299,7 @@ else
 end
 
 
-
-%% 
-%7 gerið greiningu á muninum milli þess að hafa opin augu vs lokuð augu
+% Greinum muninn milli þess að hafa opin augu og lokuð augu.
 
 o=A.open;
 o=o(:,2:3); %veljum dálka 2 og 3
@@ -314,22 +310,19 @@ c=c(:,2:3);
 c=c(:,1)+c(:,2);
 c=mean(c);
 munurinn=o-c;   %munurnn er jákvæð tala og er o þess vegna stærri tala
+%notum if lykkju til að segja okkur hvort gekk betur
 if munurinn>0
     disp('Yfir allt stóðu einstaklingar sig betur með lokuð augu')
 else 
     disp('Yfir allt stóðu einstaklingar sig betur með opin augu')
 end
 
+%Hver stóð sig best?
+%sá sem er með minnsta staðalfrávik frá 0 stóð sig best
 
-%%
-%spurning 8 sá sem er með minnsta staðalfrávik frá 0 stóð sig best
-
-%finnum fyrst út hver stóð sig best í lateral og posterior með lokuð/opin
-%augu
-
-for i=1:33
+for i=1:33 
     x=A(i).open;
-    x=x(:,2:3);
+    x=x(:,2:3); %veljum dálkana með hliðlægu og framogaftur gildin
     F{i}=std(x); %F er staðalfrávik fyrir opin augu
     y=A(i).closed;
     y=y(:,2:3);
@@ -339,7 +332,7 @@ end
 
 %sá sem stóð sig best hefur std næst núlli
 for i=1:33
-    Stad(i)=min(F{i}(1)+F{i}(2));
+    Stad(i)=min(F{i}(1)+F{i}(2)); %leitað að minnsta gildi yfir allt
     stad(i)=min(f{i}(1)+f{i}(2));
     %summmum saman lateral og anterior/posterior gildunum og 
     %finnum minnsta gildið af því
@@ -349,12 +342,10 @@ Minnsta=min(Stad);
 Bestur=find(Stad==Minnsta); %finnum hvar í breytunni Stad minnsta gildið er
 Besturiheimi=Stad(24);
 
-%og sama fyrir lokuð augu:
-
+%sama fyrir lokuð augu:
 minnsta=min(stad);
-bestur=find(stad==minnsta); %finnum hvar í breytunni stad minnsta gildið er
-besturiheimi=stad(24);
+bestur=find(stad==minnsta); %finnum hvar í breytunni 'stadð minnsta gildið er
+besturiheimi=stad(24); %besta gildið fundið
 fprintf('einstaklingur %.f stóð sig best og var hann með gildi %.2f með opin augu og %.2f með lokuð augu \n',Bestur,Besturiheimi,besturiheimi)
 
 %einstaklingur nr 24 stóð sig best
-
