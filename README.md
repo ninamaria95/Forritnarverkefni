@@ -3,20 +3,21 @@ close all;
 clear all;
 clc;
 
-slodi=uigetdir('veldu möppu');
-
+slodi=uigetdir('veldu möppu');  %náum í folderinn sem þarf
+%búum til forlykkjur til að hlaða inn hverri skrá fyrir sig
+%skrár fyrir lokuð augu
 for i=1:33
     skra=strcat('SUB',num2str(i),'_closed','.xlsx');
-    s=strcat(slodi,'\',skra);
-    A(i).closed=xlsread(s);
+    s=strcat(slodi,'\',skra); 
+    A(i).closed=xlsread(s); %söfnum gögnum inn í structure breytu
 end
-
+%skrár fyrir opin augu
 for i=1:33
-    skra=strcat('SUB',num2str(i),'_open','.xlsx');
+    skra=strcat('SUB',num2str(i),'_open','.xlsx');  
     s=strcat(slodi,'\',skra);
     A(i).open=xlsread(s);
 end
-
+%stimuli skráin sótt
 skra=strcat('Stimuli','.xlsx');
 s=strcat(slodi,'\',skra);
 B=xlsread(s);
@@ -24,6 +25,8 @@ B=xlsread(s);
 
 
 %%
+%Veljum annan dálkinn i breytu B sem inniheldur stimuli skrána
+%Breytum tíðninni þannig að 20 Hz taki gildið 0 og 59 Hz taki gildið 1
 
 Tidni=B(:,2);
 
@@ -36,29 +39,30 @@ for i=1:length(Tidni)
 end
 B(:,2)=Tidni;
 
-%köllum í fallið okkar
+%Bjuggum til fall til að telja fjölda stimuli og reiknar út meðaltímalengd
+%þeirra
 
 hfjoldi=stimulifall(B);
+%fallið prentar út niðurstöðu í command window
 
 %% 
-%búum til möppu til að vista myndirnar
+%búum til möppu til að vista gröfin okkar úr niðurstöðum fyrir hvern
+%einstakling
 mkdir myndir
 cd(strcat(pwd,'\myndir'))
 
-%gerum for lykkju fyrir alla 33 einstaklingana
+%gerum for lykkju fyrir alla 33 einstaklingana og teiknum upp gröfin
 
-for i=1:2
+for i=1:33
     figure(i)
   
-    %núna setjum við inn stimuli hlutann
+    %setjum fyrst inn stimuli hlutann
     subplot(3,2,1)
     plot(B(1:1500,1),B(1:1500,2),'m',B(1501:5250,1),B(1501:5250,2),'r',...
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
     axis([0 330 -10 10])
-%     set(gca,'XTickLabel',[0:330])
-%     set(gca,'YTickLabel',[-5 5])
     title('Stimuli','FontSize',7.3)
     
     %Stimuli mynd nr 2
@@ -70,9 +74,9 @@ for i=1:2
     axis([0 330 -10 10])
    title('Stimuli','FontSize',7.3) 
    
-   
     x=A(i).open;
-    Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
+    Qs=x(1:1500,:); %gerum fyrir hvern einasta Q hluta, þar sem Qs er quiet stance.
+    %veljum ákveðin stök í file-num til að aðgreina Q hlutana
     Q1=x(1501:5250,:);
     Q2=x(5251:9000,:);
     Q3=x(9001:12750,:);
@@ -82,11 +86,11 @@ for i=1:2
         Q2(:,1),Q2(:,2),'g', Q3(:,1),Q3(:,2),'b',Q4(:,1),Q4(:,2),'k')
     hold
     axis([0 330 -40 40])
-    title('Opin augu: Medial/Lateral vægi','LineWidth',3)
+    title('Opin augu: Medial/Lateral vægi','LineWidth',3) %setjum inn texta á gröfin
     ylabel('Torque [Nm]')
     
     x=A(i).closed;
-    Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
+    Qs=x(1:1500,:); 
     Q1=x(1501:5250,:);
     Q2=x(5251:9000,:);
     Q3=x(9001:12750,:);
@@ -115,7 +119,7 @@ for i=1:2
     xlabel('Tími[s]')
     
     x=A(i).closed;
-    Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
+    Qs=x(1:1500,:); 
     Q1=x(1501:5250,:);
     Q2=x(5251:9000,:);
     Q3=x(9001:12750,:);
@@ -127,6 +131,7 @@ for i=1:2
     title('Lokuð augu: Anterior/posterior vægi','LineWidth',3)
     ylabel('Torque [Nm]')
     xlabel('Tími[s]')
+    %setjum inn örvar til að útskýra
     x = [0.15 0.15]; %ef þú breytir þessum tölum færist örin til hliðar
     y = [0.15 0.2]; % ef þú breytir þessum breytist lengdin á örinni
     annotation('textarrow',x,y,'String','QS ')
@@ -147,22 +152,20 @@ for i=1:2
     y4 = [0.15 0.2];
     annotation('textarrow',x4,y4,'String','Q4 ')
 
-    %vistum myndirnar í tölvunni
-    temp=['fig',num2str(i),'.png']; 
+    %vistum myndirnar af gröfunum í tölvunni eina í einu
+    temp=['fig',num2str(i),'.png']; %hérna erum við að skýra hverja mynd
     saveas(gca,temp); 
 
 end
-cd .. %hérna förum við út úr möppunni myndir og aftur í okkar möppu
+cd .. %förum út úr möppunni myndir og aftur í okkar möppu
 
 
-
-%%
 
 %búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
-% á plönunum tveimur með lokuð og opin augu
+%á plönunum tveimur með lokuð og opin augu
 
 
-for i=1:2
+for i=1:33
     figure(i)
     munur=A(i).open;
     subplot(1,2,1)
@@ -179,14 +182,14 @@ for i=1:2
     title('Lokuð augu')
     xlabel('Medial/lateral [Nm]')
     ylabel('Anterior/Posterior [Nm]')
-    
 
 end
 
 %%
-%Spurning 6: Hvernig breytist staðan milli Q1 Q2...
+%viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 og hvort fólki 
+%takist að læra inná það hvernig bregðast skuli við örvunum.
 
-%breytan br finnur Qs,Q1 fyrir alla einstaklingana
+%breytan br finnur Qs,Q1.. fyrir alla einstaklingana
 br=A.closed;
 %gerum fyrir alla hluta Q nema Qs
     Q1=br(1501:5250,:);
@@ -210,25 +213,62 @@ br=A.closed;
 %höfum bara áhuga á dálk 2 og 3 sem segja okkur kraftvægið á lateral og
 %posterior
 
-Qq1=Qq1(:,2:3)
-Qq2=Qq2(:,2:3)
-Qq3=Qq3(:,2:3)
-Qq4=Qq4(:,2:3)
+Qq1=Qq1(:,2:3);
+Qq2=Qq2(:,2:3);
+Qq3=Qq3(:,2:3);
+Qq4=Qq4(:,2:3);
 
-%köllum núna í fallið, fyrir lokuð augu
+disp('frammistaða með opin augu') %Skrifum á skjáinn mat okkar á frammistöðu
+
+%búum til if setningu sem skrifar út niðurstöðu hvort frammitaðan varð
+%betri eða verri með tímanum.
+if (Qq2(:,1)+Qq2(:,2))<(Qq1(:,2)+Qq1(:,1))
+    disp('Staðan lækkar milli Q1 og Q2, frammistaða betri')
+else
+    disp('Staðan hækkar milli Q1 og Q2, frammistaða verri')
+end
+if (Qq3(:,1)+Qq3(:,2))<(Qq2(:,2)+Qq2(:,1))
+    disp('staðan lækkar milli Q2 og Q3, frammistaða betri')
+else
+    disp('Staðan hækkar milli Q2 og Q3, frammistaða verri')
+end
+if (Qq4(:,1)+Qq4(:,2))<(Qq3(:,2)+Qq3(:,1))
+    disp('Staðan lækkar milli Q3 og Q4, frammistaða betri')
+else
+    disp('Staðan hækkar milli Q3 og Q4, frammistaða verri')
+end
+
+
+%köllum núna í fallið til að finna stöðubreytingu, fyrir lokuð augu
 
 [qq1,qq2,qq3,qq4]=stodubreyting(q1,q2,q3,q4);
 
-qq1=qq1(:,2:3)
-qq2=qq2(:,2:3)
-qq3=qq3(:,2:3)
-qq4=qq4(:,2:3)
+qq1=qq1(:,2:3); %höfum bara áhuga á dálkum 2 og 3 sem eru hliðlæg og framogaftur
+qq2=qq2(:,2:3);
+qq3=qq3(:,2:3);
+qq4=qq4(:,2:3);
 
-%setjum upp í graf 
+disp('frammistaða með lokuð augu')
+if (qq2(:,1)+qq2(:,2))<(qq1(:,2)+qq1(:,1))
+    disp('Staðan lækkar milli Q1 og Q2, frammistaða betri')
+else
+    disp('Staðan hækkar milli Q1 og Q2, frammistaða verri')
+end
+if (qq3(:,1)+qq3(:,2))<(qq2(:,2)+qq2(:,1))
+    disp('staðan lækkar milli Q2 og Q3, frammistaða betri')
+else
+    disp('Staðan hækkar milli Q2 og Q3, frammistaða verri')
+end
+if (qq4(:,1)+qq4(:,2))<(qq3(:,2)+qq3(:,1))
+    disp('Staðan lækkar milli Q3 og Q4, frammistaða betri')
+else
+    disp('Staðan hækkar milli Q3 og Q4, frammistaða verri')
+end
+
+
 
 %% 
 %7 gerið greiningu á muninum milli þess að hafa opin augu vs lokuð augu
-
 
 o=A.open;
 o=o(:,2:3); %veljum dálka 2 og 3
