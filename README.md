@@ -1,4 +1,39 @@
 %% Forritunarverkefni
+close all
+clear all
+clc
+
+Föllin okkar:
+Stimuli fallið
+function [stnum y]=stimulifall(B)
+%búum til fall sem telur fjölda stimula og reiknar út meðaltímalengd þeirra
+x=find(B(:,2)==1);
+stnum=length(x);
+y=mean(B(x));
+
+fprintf('Heildarfjöldi stimuli er %0.0f \n',stnum)
+fprintf('Meðaltími hvers stimulus er %0.2f sekúndur \n',y)
+end
+
+
+Stöðubreyting
+function [a,b,c,d]=stodubreyting(x,y,z,r)
+%finna út hvernig staðan breytist milli a b c d
+%finnum fyrst tölugildi af stærðinni og svo meðaltalið af henni
+a=abs(x);
+a=mean(a);
+
+b=abs(y);
+b=mean(b);
+
+c=abs(z);
+c=mean(c);
+
+d=abs(r);
+d=mean(d);
+end
+...................................................
+
 close all;
 clear all;
 clc;
