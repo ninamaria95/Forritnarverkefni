@@ -3,7 +3,7 @@ close all;
 clear all;
 clc;
 
-slodi=uigetdir('veldu möppu')
+slodi=uigetdir('veldu möppu');
 
 for i=1:33
     skra=strcat('SUB',num2str(i),'_closed','.xlsx');
@@ -36,12 +36,14 @@ for i=1:length(Tidni)
 end
 B(:,2)=Tidni;
 
-%%
 %köllum í fallið okkar
 
 hfjoldi=stimulifall(B);
 
 %% 
+%búum til möppu til að vista myndirnar
+mkdir myndir
+cd(strcat(pwd,'\myndir'))
 
 %gerum for lykkju fyrir alla 33 einstaklingana
 
@@ -54,7 +56,7 @@ for i=1:2
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
-    axis([0 330 0 100])
+    axis([0 330 -10 10])
 %     set(gca,'XTickLabel',[0:330])
 %     set(gca,'YTickLabel',[-5 5])
     title('Stimuli','FontSize',7.3)
@@ -65,7 +67,7 @@ for i=1:2
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
-    axis([0 330 0 100])
+    axis([0 330 -10 10])
    title('Stimuli','FontSize',7.3) 
    
    
@@ -145,8 +147,14 @@ for i=1:2
     y4 = [0.15 0.2];
     annotation('textarrow',x4,y4,'String','Q4 ')
 
- 
+    %vistum myndirnar í tölvunni
+    temp=['fig',num2str(i),'.png']; 
+    saveas(gca,temp); 
+
 end
+cd .. %hérna förum við út úr möppunni myndir og aftur í okkar möppu
+
+
 
 %%
 
@@ -222,16 +230,21 @@ qq4=qq4(:,2:3)
 %7 gerið greiningu á muninum milli þess að hafa opin augu vs lokuð augu
 
 
-for i=1:2
-    x=A(i).open;
-    x=x(:,2:3);
-    y=A(i).closed;
-    y=y(:,2:3);
-    munur=x./y; %???????????
+o=A.open;
+o=o(:,2:3); %veljum dálka 2 og 3
+o=o(:,1)+o(:,2); %plúsa saman lateral og anterior posterior
+o=mean(o);  %finnum meðaltalið af gildunum fyrir opinn augu og svo lokuð.
+c=A.closed;
+c=c(:,2:3);
+c=c(:,1)+c(:,2);
+c=mean(c);
+munurinn=o-c;   %munurnn er jákvæð tala og er o þess vegna stærri tala
+if munurinn>0
+    disp('Yfir allt stóðu einstaklingar sig betur með lokuð augu')
+else 
+    disp('Yfir allt stóðu einstaklingar sig betur með opin augu')
 end
 
-
-% opinlokud=(Qq1+Qq2+Qq3+Qq4)/(qq1+qq2+qq3+qq4)
 
 %%
 %spurning 8 sá sem er með minnsta staðalfrávik frá 0 stóð sig best
@@ -258,14 +271,15 @@ for i=1:33
 end
 
 Minnsta=min(Stad);
-Bestur=find(Stad==minnsta) %finnum hvar í breytunni Stad minnsta gildið er
-Bestur=Stad(24)
+Bestur=find(Stad==Minnsta); %finnum hvar í breytunni Stad minnsta gildið er
+Besturiheimi=Stad(24);
 
 %og sama fyrir lokuð augu:
 
 minnsta=min(stad);
-bestur=find(stad==minnsta) %finnum hvar í breytunni stad minnsta gildið er
-bestur=stad(24)
+bestur=find(stad==minnsta); %finnum hvar í breytunni stad minnsta gildið er
+besturiheimi=stad(24);
+fprintf('einstaklingur %.f stóð sig best og var hann með gildi %.2f með opin augu og %.2f með lokuð augu \n',Bestur,Besturiheimi,besturiheimi)
 
 %einstaklingur nr 24 stóð sig best
 
