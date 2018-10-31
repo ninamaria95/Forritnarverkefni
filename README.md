@@ -1,7 +1,9 @@
-# Forritnarverkefni
-Forritunarverkefni 
+%% Forritunarverkefni
+close all;
+clear all;
+clc;
 
-slodi=uigetdir('Veldu moppu')
+slodi=uigetdir('veldu möppu')
 
 for i=1:33
     skra=strcat('SUB',num2str(i),'_closed','.xlsx');
@@ -19,7 +21,11 @@ skra=strcat('Stimuli','.xlsx');
 s=strcat(slodi,'\',skra);
 B=xlsread(s);
 
-Tidni=B(:,2)
+
+
+%%
+
+Tidni=B(:,2);
 
 for i=1:length(Tidni)
     if Tidni(i)==20
@@ -30,26 +36,12 @@ for i=1:length(Tidni)
 end
 B(:,2)=Tidni;
 
-%Í lið 2 breyttum við söfnunartíðninni 50 Hz í sekúndur og var það 1/50 sek sem er u.þ.b. 0.02 sek
-%finnum núna fjölda stimula/örvana
-x=find(B(:,2)==1);   %hérna er staðsetningin á örvunum
-stnum=length(x);
-
-%%Hérna er fallið okkar fyrir lið heildarfjölda stimuli og meðaltíma
-
-function [stnum y]=stimulifall(B)
-%búum til fall sem telur fjölda stimula og reiknar út meðaltímalengd þeirra
-x=find(B(:,2)==1);
-stnum=length(x);
-y=mean(B(x));
-
-fprintf('Heildarfjöldi stimuli er %0.0f \n',stnum)
-fprintf('Meðaltími hvers stimulus er %0.2f sekúndur \n',y)
-end
-
-%% kallað í fallið
+%%
+%köllum í fallið okkar
 
 hfjoldi=stimulifall(B);
+
+%% 
 
 %gerum for lykkju fyrir alla 33 einstaklingana
 
@@ -62,8 +54,9 @@ for i=1:2
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
-    set(gca,'XTickLabel',[0:50:330])
-    set(gca,'YTickLabel',{' '})
+    axis([0 330 0 100])
+%     set(gca,'XTickLabel',[0:330])
+%     set(gca,'YTickLabel',[-5 5])
     title('Stimuli','FontSize',7.3)
     
     %Stimuli mynd nr 2
@@ -72,8 +65,7 @@ for i=1:2
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
         B(12751:16500,1),B(12751:16500,2),'k')
     hold
-    set(gca,'XTickLabel',[0:50:330])
-    set(gca,'YTickLabel',{' '})
+    axis([0 330 0 100])
    title('Stimuli','FontSize',7.3) 
    
    
@@ -156,11 +148,13 @@ for i=1:2
  
 end
 
+%%
+
 %búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
 % á plönunum tveimur með lokuð og opin augu
 
 
-for i=1:33
+for i=1:2
     figure(i)
     munur=A(i).open;
     subplot(1,2,1)
@@ -177,6 +171,7 @@ for i=1:33
     title('Lokuð augu')
     xlabel('Medial/lateral [Nm]')
     ylabel('Anterior/Posterior [Nm]')
+    
 
 end
 
@@ -200,13 +195,6 @@ br=A.closed;
  %viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 með því að
  %finna meðaltal af tölugildi (abs)
  
-%  %breyting á Q1:
-% qq1=abs(Q1);
-% qq1=mean(qq1)
-% %höfum bara áhuga á niðurstöðum í dálk 2 og 3 sem sýna torque lateral og
-% %posterio
-% qq1=qq1(:,2:3)
-
 %köllum í stodubreyting fallið okkar, fyrir opin augu
 
 [Qq1,Qq2,Qq3,Qq4]=stodubreyting(Q1,Q2,Q3,Q4);
@@ -228,4 +216,56 @@ qq2=qq2(:,2:3)
 qq3=qq3(:,2:3)
 qq4=qq4(:,2:3)
 
+%setjum upp í graf 
+
+%% 
+%7 gerið greiningu á muninum milli þess að hafa opin augu vs lokuð augu
+
+
+for i=1:2
+    x=A(i).open;
+    x=x(:,2:3);
+    y=A(i).closed;
+    y=y(:,2:3);
+    munur=x./y; %???????????
+end
+
+
+% opinlokud=(Qq1+Qq2+Qq3+Qq4)/(qq1+qq2+qq3+qq4)
+
+%%
+%spurning 8 sá sem er með minnsta staðalfrávik frá 0 stóð sig best
+
+%finnum fyrst út hver stóð sig best í lateral og posterior með lokuð/opin
+%augu
+
+for i=1:33
+    x=A(i).open;
+    x=x(:,2:3);
+    F{i}=std(x); %F er staðalfrávik fyrir opin augu
+    y=A(i).closed;
+    y=y(:,2:3);
+    f{i}=std(y); %f er staðalfrávik fyrir lokuð augu
+    
+end
+
+%sá sem stóð sig best hefur std næst núlli
+for i=1:33
+    Stad(i)=min(F{i}(1)+F{i}(2));
+    stad(i)=min(f{i}(1)+f{i}(2));
+    %summmum saman lateral og anterior/posterior gildunum og 
+    %finnum minnsta gildið af því
+end
+
+Minnsta=min(Stad);
+Bestur=find(Stad==minnsta) %finnum hvar í breytunni Stad minnsta gildið er
+Bestur=Stad(8)
+
+%og sama fyrir lokuð augu:
+
+minnsta=min(stad);
+bestur=find(stad==minnsta) %finnum hvar í breytunni stad minnsta gildið er
+bestur=stad(8)
+
+%einstaklingur nr 24 stóð sig best
 
