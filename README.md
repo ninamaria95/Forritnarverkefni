@@ -259,13 +259,13 @@ end
 
 Minnsta=min(Stad);
 Bestur=find(Stad==minnsta) %finnum hvar í breytunni Stad minnsta gildið er
-Bestur=Stad(8)
+Bestur=Stad(24)
 
 %og sama fyrir lokuð augu:
 
 minnsta=min(stad);
 bestur=find(stad==minnsta) %finnum hvar í breytunni stad minnsta gildið er
-bestur=stad(8)
+bestur=stad(24)
 
 %einstaklingur nr 24 stóð sig best
 
