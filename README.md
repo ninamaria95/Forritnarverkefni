@@ -69,9 +69,9 @@ Tidni=B(:,2);
 
 for i=1:length(Tidni)
     if Tidni(i)==20
-        Tidni(i)=0;
+        Tidni(i)=0; %20 tekur gildið 0
     elseif Tidni(i)==59
-        Tidni(i)=1;
+        Tidni(i)=1; %59 tekur gildið 1
     end  
 end
 B(:,2)=Tidni; %breytum dálk 2 í nýju gildin úr for-lykkjunni
@@ -79,7 +79,7 @@ B(:,2)=Tidni; %breytum dálk 2 í nýju gildin úr for-lykkjunni
 %2. miðað við stöfnunartíðni upp á 50 Hz, hvað tekur ein mæling langan
 %tíma?
 sofnunartidni=1/50;
-fprintf('hver mæling tekur %.f sekúndur\n',sofnunartidni)
+fprintf('hver mæling tekur %.2f sekúndur\n',sofnunartidni)
 
 %3. Bjuggum til fall sem telur fjölda stimulusa og reiknar út meðaltímalengd
 %þeirra
@@ -115,23 +115,34 @@ for i=1:33
     yticklabels({''})
    title('Stimuli','FontSize',7.3) 
    
-    %Sækjum núna skránna fyrir opin augu og setjum það upp í graf
-    x=A(i).open;
+    %Sækjum skrárnar fyrir medial/lateral 
+    x=A(i).open; %opin augu
     Qs=x(1:1500,:); %gerum fyrir hvern einasta Q hluta, þar sem Qs er quiet stance.
     %veljum ákveðin stök í file-num til að aðgreina Q hlutana
     Q1=x(1501:5250,:);
     Q2=x(5251:9000,:);
     Q3=x(9001:12750,:);
     Q4=x(12751:16500,:);
+    
+    %teiknum graf fyrir Anterior/Posterior
     subplot(3,2,3)
     plot(Qs(:,1),Qs(:,2),'m',Q1(:,1),Q1(:,2),'r',...
         Q2(:,1),Q2(:,2),'g', Q3(:,1),Q3(:,2),'b',Q4(:,1),Q4(:,2),'k')
     hold
     axis([0 330 -40 40])
-    title('Opin augu: Medial/Lateral vægi','LineWidth',3) %setjum inn texta á gröfin
+    %setjum inn texta á gröfin
+    title('Opin augu: Medial/Lateral vægi','LineWidth',3) 
     ylabel('Torque [Nm]')
+        subplot(3,2,5)
+    plot(Qs(:,1),Qs(:,3),'m',Q1(:,1),Q1(:,3),'r',...
+        Q2(:,1),Q2(:,3),'g', Q3(:,1),Q3(:,3),'b',Q4(:,1),Q4(:,3),'k')
+    hold
+    axis([0 330 -40 40])
+    title('Opin augu: Anterior/posterior vægi','LineWidth',3)
+    ylabel('Torque [Nm]')
+    xlabel('Tími[s]')
     
-    x=A(i).closed;  %sótt skránna fyrir lokuð augu
+    x=A(i).closed;  %lokuð augu
     Qs=x(1:1500,:); 
     Q1=x(1501:5250,:);
     Q2=x(5251:9000,:);
@@ -144,28 +155,7 @@ for i=1:33
     title('Lokuð augu: Medial/Lateral vægi','LineWidth',3)
     ylabel('Torque [Nm]')
     
-    %Bætum við Anterior/posterior vægi við opin augu
-    x=A(i).open;
-    Qs=x(1:1500,:); %gerum fyrir hvert einasta Q
-    Q1=x(1501:5250,:);
-    Q2=x(5251:9000,:);
-    Q3=x(9001:12750,:);
-    Q4=x(12751:16500,:);
-    subplot(3,2,5)
-    plot(Qs(:,1),Qs(:,3),'m',Q1(:,1),Q1(:,3),'r',...
-        Q2(:,1),Q2(:,3),'g', Q3(:,1),Q3(:,3),'b',Q4(:,1),Q4(:,3),'k')
-    hold
-    axis([0 330 -40 40])
-    title('Opin augu: Anterior/posterior vægi','LineWidth',3)
-    ylabel('Torque [Nm]')
-    xlabel('Tími[s]')
-    
-    x=A(i).closed; %lokuð augu
-    Qs=x(1:1500,:); 
-    Q1=x(1501:5250,:);
-    Q2=x(5251:9000,:);
-    Q3=x(9001:12750,:);
-    Q4=x(12751:16500,:);
+    %teiknum graf fyrir Anterior/Posterior
     subplot(3,2,6)
     plot(Qs(:,1),Qs(:,3),'m',Q1(:,1),Q1(:,3),'r',...
         Q2(:,1),Q2(:,3),'g', Q3(:,1),Q3(:,3),'b',Q4(:,1),Q4(:,3),'k')
@@ -173,6 +163,7 @@ for i=1:33
     title('Lokuð augu: Anterior/posterior vægi','LineWidth',3)
     ylabel('Torque [Nm]')
     xlabel('Tími[s]')
+
     %setjum inn örvar til að útskýra hvern Q hlut
     x = [0.15 0.15]; %ef þú breytir þessum tölum færist örin til hliðar
     y = [0.15 0.2]; % ef þú breytir þessum breytist lengdin á örinni
@@ -207,8 +198,8 @@ for i=1:33
     %búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
     %á plönunum tveimur með lokuð og opin augu
     figure
-    munur=A(i).open;
-    subplot(1,2,1)
+    munur=A(i).open; %veljum skrá
+    subplot(1,2,1) %setjum tvö gröf saman í glugga
     plot(munur(:,2),munur(:,3),'b.','LineWidth',0.3)
     axis([-15 15 -20 30])
     title('Opin augu')
@@ -244,8 +235,6 @@ bre=A.open; %opin augu
     q3=bre(9001:12750,:);
     q4=bre(12751:16500,:);
     
-%7. Gerum greiningu á muninum milli þess að hafa opin augu vs. að hafa
-%lokuð augu.
  %finum hvernig staðan breytist milli Q1,Q2,Q3 og Q4 með því að
 %finna meðaltal af tölugildi (abs)
 %bjuggum til fall sem gerir það, köllum í það:
@@ -308,7 +297,7 @@ else
 end
 
 
-% Greinum muninn milli þess að hafa opin augu og lokuð augu.
+%7. Greinum muninn milli þess að hafa opin augu og að hafa lokuð augu.
 
 o=A.open;
 o=o(:,2:3); %veljum dálka 2 og 3
@@ -326,8 +315,8 @@ else
     disp('Yfir allt stóðu einstaklingar sig betur með opin augu')
 end
 
-%Hver stóð sig best?
-%sá sem er með minnsta staðalfrávik frá 0 stóð sig best
+%8. Finnum út hvaða einstaklingur stóð sig best í prófinu miðað við
+%okkar niðurstöður
 
 for i=1:33 
     x=A(i).open;
@@ -336,6 +325,7 @@ for i=1:33
     y=A(i).closed;
     y=y(:,2:3);
     f{i}=std(y); %f er staðalfrávik fyrir lokuð augu
+    %sá sem er með minnsta staðalfrávik frá 0 stóð sig best
     
 end
 
@@ -358,5 +348,4 @@ besturiheimi=stad(24); %besta gildið fundið
 fprintf('einstaklingur %.f stóð sig best og var hann með gildi %.2f með opin augu og %.2f með lokuð augu \n',Bestur,Besturiheimi,besturiheimi)
 
 %einstaklingur nr 24 stóð sig best
-
 
