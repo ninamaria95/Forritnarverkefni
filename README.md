@@ -34,14 +34,13 @@ d=mean(d);
 end
 ...................................................
 
-close all;
-clear all;
-clc;
-
 %% Forritunarverkefni
 close all;
 clear all;
 clc;
+
+%1. látum matlab finna sjálfvirkt allar gagnaskrárnar og lesa þær
+%sjálfvirkt inn
 
 slodi=uigetdir('veldu möppu');  %náum í folderinn sem þarf
 %búum til forlykkjur til að hlaða inn hverri skrá fyrir sig
@@ -63,8 +62,6 @@ s=strcat(slodi,'\',skra);
 B=xlsread(s);   %skýrum breytuna B
 
 
-
-%%
 %Veljum annan dálkinn i breytu B sem inniheldur stimuli skrána
 %Breytum tíðninni þannig að 20 Hz taki gildið 0 og 59 Hz taki gildið 1
 
@@ -79,22 +76,26 @@ for i=1:length(Tidni)
 end
 B(:,2)=Tidni; %breytum dálk 2 í nýju gildin úr for-lykkjunni
 
-%Bjuggum til fall til að telja fjölda stimuli og reiknar út meðaltímalengd
+%2. miðað við stöfnunartíðni upp á 50 Hz, hvað tekur ein mæling langan
+%tíma?
+sofnunartidni=1/50;
+fprintf('hver mæling tekur %.f sekúndur\n',sofnunartidni)
+
+%3. Bjuggum til fall sem telur fjölda stimulusa og reiknar út meðaltímalengd
 %þeirra
 
 hfjoldi=stimulifall(B);
-%fallið prentar út niðurstöðu í command window
+%fallið skrifar út niðurstöðu í command window
 
-%búum til möppu til að vista gröfin okkar úr niðurstöðum fyrir hvern
-%einstakling
-mkdir myndir
+%4. Teiknum upp gröfin fyrir einstaklingana og látum matlab vista myndirnar
+%sjálfkrafa í undirmöppunni 'myndir'.
 
-%gerum for lykkju fyrir alla 33 einstaklingana og teiknum upp gröfin
+mkdir myndir %búum til möppu
 
+%gerum for lykkju fyrir alla 33 einstaklingana sem teiknar upp gröfin
 for i=1:33
-    figure(i)
-    
-    %setjum fyrst inn stimuli hlutann
+    figure(i) %nefnum figure gluggana fyrir hvern einstakling
+    %setjum fyrst inn stimulus hlutann
     subplot(3,2,1)
     plot(B(1:1500,1),B(1:1500,2),'m',B(1501:5250,1),B(1501:5250,2),'r',...
         B(5251:9000,1),B(5251:9000,2),'g',B(9001:12750,1),B(9001:12750,2),'b',...
@@ -200,11 +201,11 @@ for i=1:33
     cd .. %förum út úr möppunni 'myndir' og aftur í okkar möppu
 end
 
-
-%búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
-%á plönunum tveimur með lokuð og opin augu
+%5.Teiknum upp muninn á sveigjunni í plönunum tveimur.
 
 for i=1:33
+    %búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
+    %á plönunum tveimur með lokuð og opin augu
     figure
     munur=A(i).open;
     subplot(1,2,1)
@@ -225,7 +226,7 @@ for i=1:33
 
 end
 
-%viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 og hvort fólki 
+%6. Viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 og hvort fólki 
 %takist að læra inná það hvernig bregðast skuli við örvunum.
 
 %breytan br finnur Qs,Q1,Q2,Q3 og Q4 fyrir alla einstaklingana
@@ -243,8 +244,10 @@ bre=A.open; %opin augu
     q3=bre(9001:12750,:);
     q4=bre(12751:16500,:);
     
- %viljum finna hvernig staðan breytist milli Q1,Q2,Q3 og Q4 með því að
- %finna meðaltal af tölugildi (abs)
+%7. Gerum greiningu á muninum milli þess að hafa opin augu vs. að hafa
+%lokuð augu.
+ %finum hvernig staðan breytist milli Q1,Q2,Q3 og Q4 með því að
+%finna meðaltal af tölugildi (abs)
 %bjuggum til fall sem gerir það, köllum í það:
 
 [Qq1,Qq2,Qq3,Qq4]=stodubreyting(Q1,Q2,Q3,Q4); %opin augu
@@ -355,4 +358,5 @@ besturiheimi=stad(24); %besta gildið fundið
 fprintf('einstaklingur %.f stóð sig best og var hann með gildi %.2f með opin augu og %.2f með lokuð augu \n',Bestur,Besturiheimi,besturiheimi)
 
 %einstaklingur nr 24 stóð sig best
+
 
