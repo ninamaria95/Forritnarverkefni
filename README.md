@@ -38,6 +38,11 @@ close all;
 clear all;
 clc;
 
+%% Forritunarverkefni
+close all;
+clear all;
+clc;
+
 slodi=uigetdir('veldu möppu');  %náum í folderinn sem þarf
 %búum til forlykkjur til að hlaða inn hverri skrá fyrir sig
 %skrár fyrir lokuð augu
@@ -83,13 +88,12 @@ hfjoldi=stimulifall(B);
 %búum til möppu til að vista gröfin okkar úr niðurstöðum fyrir hvern
 %einstakling
 mkdir myndir
-cd(strcat(pwd,'\myndir'))
 
 %gerum for lykkju fyrir alla 33 einstaklingana og teiknum upp gröfin
 
 for i=1:33
     figure(i)
-  
+    
     %setjum fyrst inn stimuli hlutann
     subplot(3,2,1)
     plot(B(1:1500,1),B(1:1500,2),'m',B(1501:5250,1),B(1501:5250,2),'r',...
@@ -190,17 +194,18 @@ for i=1:33
     annotation('textarrow',x4,y4,'String','Q4 ')
 
     %vistum myndirnar af gröfunum í tölvunni eina í einu
+    cd(strcat(pwd,'\myndir')) %köllum í folderinn
     temp=['fig',num2str(i),'.png']; %þessi skipun skýrir hverja mynd fyrir sig
     saveas(gca,temp); 
-
+    cd .. %förum út úr möppunni 'myndir' og aftur í okkar möppu
 end
-cd .. %förum út úr möppunni 'myndir' og aftur í okkar möppu
+
 
 %búum til aðra for-lykkju fyrir hvern einstakling þar sem tekinn er munur
 %á plönunum tveimur með lokuð og opin augu
 
 for i=1:33
-    figure(i)
+    figure
     munur=A(i).open;
     subplot(1,2,1)
     plot(munur(:,2),munur(:,3),'b.','LineWidth',0.3)
@@ -216,6 +221,7 @@ for i=1:33
     title('Lokuð augu')
     xlabel('Medial/lateral [Nm]')
     ylabel('Anterior/Posterior [Nm]')
+    
 
 end
 
@@ -349,3 +355,4 @@ besturiheimi=stad(24); %besta gildið fundið
 fprintf('einstaklingur %.f stóð sig best og var hann með gildi %.2f með opin augu og %.2f með lokuð augu \n',Bestur,Besturiheimi,besturiheimi)
 
 %einstaklingur nr 24 stóð sig best
+
